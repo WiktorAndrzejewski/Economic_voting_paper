@@ -12,7 +12,8 @@ library(purrr)
 #-------------------------------------------------------------
 
 # Uploading data from Excel file containing average salary information
-average_salary_raw <- read_excel("C:/Users/Marian/Documents/GitHub/Economic_Voting_PL/Data/WYNA_2497_XTAB_20250329140152.xlsx", sheet = 2)
+average_salary_raw <- read_excel("../Data/WYNA_2497_XTAB_20250329140152.xlsx",
+                                 sheet = 2)
 
 # Set the first row as column names
 average_salary_raw <- row_to_names(average_salary_raw, row_number = 1)
