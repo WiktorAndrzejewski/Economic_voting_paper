@@ -34,9 +34,14 @@ Panel$`Vote.share.PO` <- Panel$`Platforma Obywatelska` / Panel$`Valid ballot pap
 Panel$average_salary <- as.numeric(Panel$average_salary)
 Panel$log_salary <- log(Panel$average_salary)
 Panel$`Rulling.Party_PiS` <- ifelse(Panel$year %in% c(2005:2007, 2015:2023), '1', '0')
-Panel$`Rulling.Party_PO` <- ifelse(Panel$year %in% 2007:2015, '1', '0')
-Panel$`Rulling.Party` <- ifelse(Panel$year %in% 2007:2011, 'Platforma Obywatelska', 'Prawo i Sprawiedliwosc') 
 
+# Update after adding 2023 election data
+Panel$`Rulling.Party_PO` <- ifelse(Panel$year %in% c(2007:2015, 2023), '1', '0')
+#Panel$`Rulling.Party_PO` <- ifelse(Panel$year %in% 2007:2015, '1', '0')
+
+# Update after adding 2023 election data
+#Panel$`Rulling.Party` <- ifelse(Panel$year %in% 2007:2011, 'Platforma Obywatelska', 'Prawo i Sprawiedliwosc') 
+Panel$`Rulling.Party` <- ifelse(Panel$year %in% c(2007:2011,2023), 'Platforma Obywatelska', 'Prawo i Sprawiedliwosc') 
 
 Data <- Panel[, c("Code", "year", "log_salary", "average_salary", "Vote.share.PiS", "unemployment_rate", "Vote.share.PO", "population_size", "Rulling.Party", "Prawo i Sprawiedliwosc", "Platforma Obywatelska", "Rulling.Party_PiS", "Rulling.Party_PO", "Valid ballot papers")]
 
@@ -109,7 +114,6 @@ SalaryxUnemployment <- I(Data$unemployment_rate * Data$log_salary - Data$unemplo
 
 
 #Delta squared
-
 Data$Unemployment_Rate_squared_T <- Data$unemployment_rate ^2
 
 Data <- Data %>%
@@ -123,9 +127,7 @@ Data <- Data %>%
 
 Data$`Delta_log_salary_squared` = Data$log_salary_squared_T - Data$log_salary_squared_T.minus.1
 
-
 #Asymmetric influence
-
 Data$delta_unemployment_if_pos <- ifelse(Data$Delta_Unemployment_Rate >0, Data$Delta_Unemployment_Rate,0)
 Data$delta_unemployment_if_neg <- ifelse(Data$Delta_Unemployment_Rate <0, Data$Delta_Unemployment_Rate,0)
 Data$delta_unemployment_if_posxPO <- ifelse(Data$Delta_Unemployment_Rate >0, Data$Delta_Unemployment_Rate * Data$Rulling.Party_PO,0)
